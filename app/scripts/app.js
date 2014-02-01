@@ -19,37 +19,36 @@
  *
  */
 
-angular.module('ngScaffoldApp', ['ngCookies', 'ngRoute', 'pascalprecht.translate'])
+angular.module('fiaMedKnuffApp', ['ngCookies', 'ngRoute', 'pascalprecht.translate'])
 	.config(function ($routeProvider) {
 		$routeProvider
 			.when('/', {
 				templateUrl: 'views/main.html',
-				controller: 'MainCtrl'
+				controller: 'GameCtrl'
 			})
 			.otherwise({
 				redirectTo: '/'
 			});
 	})
 
-
-	/*
+/*
 	    config below fixes this http bug
 	    http://stackoverflow.com/questions/16661032/http-get-is-not-allowed-by-access-control-allow-origin-but-ajax-is  
 	  */
 
-	.config(function ($httpProvider) {
-		delete $httpProvider.defaults.headers.common['X-Requested-With'];
-	})
+.config(function ($httpProvider) {
+	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+})
 
-	/*
+/*
 	    translation
 	    http://pascalprecht.github.io/angular-translate/docs/en/#/guide
 	   */
-	.config(function ($translateProvider) {
-		$translateProvider.useStaticFilesLoader({
-			prefix: 'i18n/locale-',
-			suffix: '.json'
-		});
-		$translateProvider.preferredLanguage('en');
-		$translateProvider.useLocalStorage();
+.config(function ($translateProvider) {
+	$translateProvider.useStaticFilesLoader({
+		prefix: 'i18n/locale-',
+		suffix: '.json'
 	});
+	$translateProvider.preferredLanguage('en');
+	$translateProvider.useLocalStorage();
+});
