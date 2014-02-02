@@ -8,6 +8,5 @@ angular.module('fiaMedKnuffApp')
 				'AngularJS',
 				'Karma'
 			];
-			console.log(boardFactory.rollDice());
 		}
 	]);
