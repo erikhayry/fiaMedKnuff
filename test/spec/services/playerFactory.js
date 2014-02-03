@@ -15,7 +15,7 @@ describe('Service: playerFactory', function () {
 		it('should create and return players', function () {
 			var players = playerFactory.createPlayers(4);
 			players = playerFactory.createPlayers(2);
-			
+
 			expect(players.length).toBe(2);
 
 			expect(players[0].name).toBe('Player 1');

@@ -2,8 +2,9 @@
 
 angular.module('fiaMedKnuffApp')
 	.factory('playerFactory', [
+
 		function () {
-      /*
+			/*
         players structure
         [
           {
@@ -15,7 +16,7 @@ angular.module('fiaMedKnuffApp')
 			var _players = [],
 				_createPlayer = function () {
 					_players.push({
-						'name': 'Player ' + (_players.length + 1)            
+						'name': 'Player ' + (_players.length + 1)
 					});
 				};
 
@@ -23,7 +24,7 @@ angular.module('fiaMedKnuffApp')
 			return {
 				createPlayers: function (numOfPlayers) {
 					_players = [];
-          for (var i = numOfPlayers - 1; i >= 0; i--) {
+					for (var i = numOfPlayers - 1; i >= 0; i--) {
 						_createPlayer();
 					}
 					return _players;

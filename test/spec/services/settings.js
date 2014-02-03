@@ -2,17 +2,17 @@
 
 describe('Service: settings', function () {
 
-  // load the service's module
-  beforeEach(module('fiaMedKnuffApp'));
+	// load the service's module
+	beforeEach(module('fiaMedKnuffApp'));
 
-  // instantiate service
-  var settings;
-  beforeEach(inject(function (_settings_) {
-    settings = _settings_;
-  }));
+	// instantiate service
+	var settings;
+	beforeEach(inject(function (_settings_) {
+		settings = _settings_;
+	}));
 
-  it('should do something', function () {
-    expect(!!settings).toBe(true);
-  });
+	it('should do something', function () {
+		expect( !! settings).toBe(true);
+	});
 
 });
