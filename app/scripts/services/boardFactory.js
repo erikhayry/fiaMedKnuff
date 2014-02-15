@@ -35,10 +35,10 @@ angular.module('fiaMedKnuffApp')
                 '1-3'
               ],
               'finish' : [
-                '',
-                '',
-                '',
-                ''
+                [],
+                [],
+                [],
+                []
                 n... n = number of tokens
               ]
             },
@@ -64,12 +64,7 @@ angular.module('fiaMedKnuffApp')
 				},
 
 				_canLeaveNest = function (diceValue) {
-					for (var i = 0; i < rules.canLeaveNestValues.length; i++) {
-						if (diceValue === rules.canLeaveNestValues[i]) {
-							return true;
-						}
-					}
-					return false;
+					return (rules.canLeaveNestValues.indexOf(diceValue)) < 0 ? false : true;
 				},
 
 				_getOffset = function (playerId) {
@@ -80,27 +75,35 @@ angular.module('fiaMedKnuffApp')
 					}
 				},
 
-				_move = function (playerId, tokenId, from, diceValue) {
-					var _newTrackIndex = from + diceValue;
-
-					if (!_board.track[_newTrackIndex]) {
-						_board.track[_newTrackIndex] = {};
-					}
-
-					if (playerId in _board.track[_newTrackIndex]) {
-						_board.track[_newTrackIndex][playerId].push(tokenId);
-					} else {
-						_board.track[_newTrackIndex][playerId] = [tokenId];
-					}
-
-					var _players = _board.track[_newTrackIndex];
-					for (var player in _players) {
-						if (player.toString() !== playerId) {
-							for (var i = 0; i < _players[player].length; i++) {
-								_kickBack(player.toString(), _players[player][i], _newTrackIndex);
+				_cleanUpTileofOpponents = function(playerId, trackIndex){
+					//check if any opponent tokens exists on same tile and kick back if true
+					var _players = _board.track[trackIndex];
+					for (var _player in _players) {
+						if (_player.toString() !== playerId) {
+							for (var i = 0; i < _players[_player].length; i++) {
+								_kickBack(_player.toString(), _players[_player][i], trackIndex);
 							}
 						}
+					}					
+				},
+
+				_move = function (playerId, tokenId, to) {
+					//create object for tile if it doesn't exist
+					if (!_board.track[to]) {
+						_board.track[to] = {};
 					}
+
+					//if player array already exists for tile add token
+					if (playerId in _board.track[to]) {
+						_board.track[to][playerId].push(tokenId);
+					} 
+					
+					//else add new player array containing token
+					else {
+						_board.track[to][playerId] = [tokenId];
+					}
+
+					_cleanUpTileofOpponents(playerId, to);
 
 				},
 
@@ -112,6 +115,25 @@ angular.module('fiaMedKnuffApp')
 				_kickBack = function (playerId, tokenId, from) {
 					_board.players[playerId].yard[tokenId.slice(tokenId.indexOf('-') + 1)] = tokenId;
 					_remove(playerId, tokenId, from);
+				},
+
+				_haveCompletedLap = function(playerId, from, diceValue){
+					var _playersLastTrackIndex = _getOffset(playerId) - 1;
+					if(_playersLastTrackIndex < 0) _playersLastTrackIndex = _board.track.length;
+					return (from + diceValue) - (_playersLastTrackIndex + _getOffset(playerId));
+				},
+
+				_moveToFinish = function(playerId, tokenId, index){
+					_board.players[playerId].finish[index].push(tokenId);
+				},
+
+				_getLastTile = function(playerId){
+					var _endTile = _getOffset(playerId) - 1;
+					return (_endTile < 0) ? _board.track.length : _endTile;
+				},
+
+				_getNewIndex = function(){
+
 				};
 
 			return {
@@ -140,7 +162,9 @@ angular.module('fiaMedKnuffApp')
 
 						for (var j = 0; j < settings.numberOfTokens; j++) {
 							_board.players[i].yard.push(i + '-' + j);
+							_board.players[i].finish[j] = [];
 						}
+
 					}
 
 					return _board;
@@ -155,9 +179,9 @@ angular.module('fiaMedKnuffApp')
 						_offset = _getOffset(parseInt(_playerId));
 
 					if (rules.startAtTileDiceValue) {
-						_move(_playerId, tokenId, _offset, diceValue - 1);
+						_move(_playerId, tokenId, _offset + diceValue - 1);
 					} else {
-						_move(_playerId, tokenId, _offset, 0);
+						_move(_playerId, tokenId, _offset);
 					}
 
 					var _yard = _board.players[parseInt(_playerId)].yard;
@@ -165,10 +189,39 @@ angular.module('fiaMedKnuffApp')
 
 				},
 
-				move: function (tokenId, from, diceValue) {
-					var _playerId = tokenId.slice(0, tokenId.indexOf('-'));
-					_move(_playerId, tokenId, from, diceValue);
-					_remove(_playerId, tokenId, from);
+				moveInFinish: function(tokenId, from, diceValue){
+					var _playerId = tokenId.slice(0, tokenId.indexOf('-')),
+						_finishArr = _board.players[playerId].finish;
+
+
+    				var _newIndex = _finishArr.length % (from + diceValue)
+
+    				_finishArr[_newIndex].push(tokenId);
+				},
+
+				move: function (tokenId, from, diceValue) {					
+					var _playerId = tokenId.slice(0, tokenId.indexOf('-')),
+						_lastTile = _getLastTile(_playerId),
+						_start = from,
+						_to = from + diceValue;
+
+					//if running of the board and is not player 1
+					if(_to > _board.track.length && _playerId !== '0'){
+						_to = _to - _board.track.length - 1;
+						from = 0;
+					}	
+
+					//if token completed lap, move to finish 	
+					if(from < _lastTile && _to > _lastTile) {
+						_moveToFinish(_playerId, tokenId, _to - _lastTile - 1);
+					}
+
+					//else move along on track
+					else{
+						_move(_playerId, tokenId, _to)
+					}
+					
+					_remove(_playerId, tokenId, _start);
 
 				}
 

@@ -41,6 +41,8 @@ describe('Service: boardFactory', function () {
 			expect(board.players[0].finish.length).toBe(4);
 			expect(board.players[1].finish.length).toBe(4);
 
+			expect(board.players[0].finish[0].length).toBe(0);
+
 			expect(board.players[0].yard[0]).toBe('0-0');
 			expect(board.players[0].yard[1]).toBe('0-1');
 			expect(board.players[0].yard[2]).toBe('0-2');
@@ -50,6 +52,17 @@ describe('Service: boardFactory', function () {
 			expect(board.players[1].yard[1]).toBe('1-1');
 			expect(board.players[1].yard[2]).toBe('1-2');
 			expect(board.players[1].yard[3]).toBe('1-3');
+		});
+
+		it('should build the nest and the finish according to the amount of tokens', function () {
+			settings.numberOfTokens = 6;
+			var sixTokenBoard = boardFactory.buildBoard(playerFactory.createPlayers(2));
+
+			expect(sixTokenBoard.players[0].yard.length).toBe(6);
+			expect(sixTokenBoard.players[1].yard.length).toBe(6);
+
+			expect(sixTokenBoard.players[0].finish.length).toBe(6);
+			expect(sixTokenBoard.players[1].finish.length).toBe(6);
 
 		});
 	});
@@ -136,7 +149,13 @@ describe('Service: boardFactory', function () {
 		});
 
 		it('should kick back any opponents standing on target tile', function () {
+			boardFactory.moveToTrack('0-0', 6);
+			boardFactory.move('0-0', 0, 14);
+			boardFactory.moveToTrack('1-1', 1);
 
+			expect(board.track[14][0].length).toBe(0);
+			expect(board.track[14][1][0]).toBe('1-1');
+			expect(board.players[0].yard[0]).toBe('0-0');
 		});
 
 	});
@@ -147,15 +166,27 @@ describe('Service: boardFactory', function () {
 			rules.startAtTileDiceValue = true;
 
 			boardFactory.moveToTrack('0-0', 6);
+			boardFactory.moveToTrack('0-1', 6);
 			boardFactory.move('0-0', 5, 6);
 			expect(board.track[11][0][0]).toBe('0-0');
-			expect(board.track[5][0].length).toBe(0);
+			expect(board.track[5][0].length).toBe(1);
 
 			boardFactory.moveToTrack('1-0', 6);
 			boardFactory.move('1-0', 19, 6);
 			expect(board.track[25][1][0]).toBe('1-0');
 			expect(board.track[19][1].length).toBe(0);
+		});
 
+		it('should move token to start of track if new position is larger than size of track', function () {
+			boardFactory.moveToTrack('1-0', 1);
+			boardFactory.move('1-0', 14, 60);
+			expect(board.track[3][1][0]).toBe('1-0');
+			expect(board.track[14][1].length).toBe(0);
+
+			boardFactory.moveToTrack('2-0', 1);
+			boardFactory.move('2-0', 28, 60);
+			expect(board.track[17][2][0]).toBe('2-0');
+			expect(board.track[28][2].length).toBe(0);
 		});
 
 		it('should kick back any opponents standing on target tile', function () {
@@ -166,13 +197,32 @@ describe('Service: boardFactory', function () {
 			expect(board.track[14][0][0]).toBe('0-0');
 			expect(board.track[14][1].length).toBe(0);
 			expect(board.players[1].yard[0]).toBe('1-0');
-
 		});
 
 		it('should move token to finish if lap completed', function () {
+			boardFactory.moveToTrack('0-0', 1);
+			boardFactory.move('0-0', 0, 71);
+			expect(board.players[0].finish[0][0]).toBe('0-0');
 
+			boardFactory.moveToTrack('1-0', 1);
+			boardFactory.move('1-0', 14, 71);
+			expect(board.players[1].finish[0][0]).toBe('1-0');
 		});
 
+	});
+
+	describe('moveInFinish()', function(){
+		it('should move token in finish area', function(){
+			boardFactory.moveToTrack('0-0', 1);
+			boardFactory.move('0-0', 0, 71);
+			boardFactory.moveToTrack('0-1', 1);
+			boardFactory.move('0-1', 0, 72);
+
+			boardFactory.moveInFinish('0-0', 0, 3);
+
+			expect(board.players[0].finish[3][0]).toBe('0-0');
+			expect(board.players[0].finish[1][0]).toBe('0-1');
+		});
 	});
 
 });
