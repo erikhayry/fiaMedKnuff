@@ -194,9 +194,52 @@ angular.module('fiaMedKnuffApp')
 						_finishArr = _board.players[playerId].finish;
 
 
-    				var _newIndex = _finishArr.length % (from + diceValue)
+    				var _newIndex = diceValue % _finishArr.length;
 
     				_finishArr[_newIndex].push(tokenId);
+				},
+
+				getFinishMovesOption: function(index, diceValue){
+					
+					var _getOptionOne = function(arrLenght, index, diceVal){
+						//check how many steps to take before switching direction
+						var _stepsOnNextArrs = diceVal - arrLenght + index + 1,
+							_arrLenght = arrLenght - 1;
+
+						//if less than one. direction never changed so return dice value
+						if(_stepsOnNextArrs < 1) return diceVal + index;
+
+						//_changeDir equals how many times we gone thorugh the whole lenth of the arr
+						var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
+						  //steps to take after turning the last time
+						  _stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;
+						  
+						//if gone though array uneven numbers of time, starting from left on the last array
+						if((_changeDir) % 2 !== 0) return _stepsOnLastTurn;
+						//else start counting from the right
+						else return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
+					},
+					_getOptionTwo = function(arrLenght, index, diceVal){
+						//check how many steps to take before switching direction
+						var _stepsOnNextArrs = diceVal - index,
+							_arrLenght = arrLenght - 1;
+
+						//if less than one. direction never changed so return dice value
+						if(_stepsOnNextArrs < 1) return index - diceVal;
+
+						//_changeDir equals how many times we gone thorugh the whole lenth of the arr
+						var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
+						  //steps to take after turning the last time
+						  _stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;						
+						  
+						//if gone though array even numbers of time, starting from left on the last array
+						if((_changeDir) % 2 === 0) return _stepsOnLastTurn;
+						//else start counting from the right
+						else return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
+					}
+
+					var _arrLenght = _board.players[0].finish.length;
+					return [_getOptionOne(_arrLenght, index, diceValue), _getOptionTwo(_arrLenght, index, diceValue)];
 				},
 
 				move: function (tokenId, from, diceValue) {					

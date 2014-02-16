@@ -211,17 +211,16 @@ describe('Service: boardFactory', function () {
 
 	});
 
-	describe('moveInFinish()', function(){
-		it('should move token in finish area', function(){
-			boardFactory.moveToTrack('0-0', 1);
-			boardFactory.move('0-0', 0, 71);
-			boardFactory.moveToTrack('0-1', 1);
-			boardFactory.move('0-1', 0, 72);
+	describe('getFinishMovesOption()', function(){
+		it('should return options of possibles moves', function(){
+			var options1 = boardFactory.getFinishMovesOption(2, 3),
+				options2 = boardFactory.getFinishMovesOption(1, 5);
 
-			boardFactory.moveInFinish('0-0', 0, 3);
+			expect(options1[0]).toBe(5);
+			expect(options1[1]).toBe(1);
 
-			expect(board.players[0].finish[3][0]).toBe('0-0');
-			expect(board.players[0].finish[1][0]).toBe('0-1');
+			expect(options2[0]).toBe(4);
+			expect(options2[1]).toBe(4);
 		});
 	});
 
