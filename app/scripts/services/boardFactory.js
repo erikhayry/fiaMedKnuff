@@ -75,7 +75,7 @@ angular.module('fiaMedKnuffApp')
 					}
 				},
 
-				_cleanUpTileofOpponents = function(playerId, trackIndex){
+				_cleanUpTileofOpponents = function (playerId, trackIndex) {
 					//check if any opponent tokens exists on same tile and kick back if true
 					var _players = _board.track[trackIndex];
 					for (var _player in _players) {
@@ -84,7 +84,7 @@ angular.module('fiaMedKnuffApp')
 								_kickBack(_player.toString(), _players[_player][i], trackIndex);
 							}
 						}
-					}					
+					}
 				},
 
 				_move = function (playerId, tokenId, to) {
@@ -96,8 +96,8 @@ angular.module('fiaMedKnuffApp')
 					//if player array already exists for tile add token
 					if (playerId in _board.track[to]) {
 						_board.track[to][playerId].push(tokenId);
-					} 
-					
+					}
+
 					//else add new player array containing token
 					else {
 						_board.track[to][playerId] = [tokenId];
@@ -117,23 +117,13 @@ angular.module('fiaMedKnuffApp')
 					_remove(playerId, tokenId, from);
 				},
 
-				_haveCompletedLap = function(playerId, from, diceValue){
-					var _playersLastTrackIndex = _getOffset(playerId) - 1;
-					if(_playersLastTrackIndex < 0) _playersLastTrackIndex = _board.track.length;
-					return (from + diceValue) - (_playersLastTrackIndex + _getOffset(playerId));
-				},
-
-				_moveToFinish = function(playerId, tokenId, index){
+				_moveToFinish = function (playerId, tokenId, index) {
 					_board.players[playerId].finish[index].push(tokenId);
 				},
 
-				_getLastTile = function(playerId){
+				_getLastTile = function (playerId) {
 					var _endTile = _getOffset(playerId) - 1;
 					return (_endTile < 0) ? _board.track.length : _endTile;
-				},
-
-				_getNewIndex = function(){
-
 				};
 
 			return {
@@ -189,81 +179,83 @@ angular.module('fiaMedKnuffApp')
 
 				},
 
-				moveInFinish: function(tokenId, from, diceValue){
-					var _playerId = tokenId.slice(0, tokenId.indexOf('-')),
-						_finishArr = _board.players[playerId].finish;
+				getFinishMovesOption: function (index, diceValue) {
 
-
-    				var _newIndex = diceValue % _finishArr.length;
-
-    				_finishArr[_newIndex].push(tokenId);
-				},
-
-				getFinishMovesOption: function(index, diceValue){
-					
-					var _getOptionOne = function(arrLenght, index, diceVal){
+					var _getOptionOne = function (arrLenght, index, diceVal) {
 						//check how many steps to take before switching direction
 						var _stepsOnNextArrs = diceVal - arrLenght + index + 1,
 							_arrLenght = arrLenght - 1;
 
 						//if less than one. direction never changed so return dice value
-						if(_stepsOnNextArrs < 1) return diceVal + index;
+						if (_stepsOnNextArrs < 1) {
+							return diceVal + index;
+						}
 
 						//_changeDir equals how many times we gone thorugh the whole lenth of the arr
 						var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
-						  //steps to take after turning the last time
-						  _stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;
-						  
+							//steps to take after turning the last time
+							_stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;
+
 						//if gone though array uneven numbers of time, starting from left on the last array
-						if((_changeDir) % 2 !== 0) return _stepsOnLastTurn;
+						if ((_changeDir) % 2 !== 0) {
+							return _stepsOnLastTurn;
+						}
 						//else start counting from the right
-						else return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
+						else {
+							return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
+						}
 					},
-					_getOptionTwo = function(arrLenght, index, diceVal){
-						//check how many steps to take before switching direction
-						var _stepsOnNextArrs = diceVal - index,
-							_arrLenght = arrLenght - 1;
+						_getOptionTwo = function (arrLenght, index, diceVal) {
+							//check how many steps to take before switching direction
+							var _stepsOnNextArrs = diceVal - index,
+								_arrLenght = arrLenght - 1;
 
-						//if less than one. direction never changed so return dice value
-						if(_stepsOnNextArrs < 1) return index - diceVal;
+							//if less than one. direction never changed so return dice value
+							if (_stepsOnNextArrs < 1) {
+								return index - diceVal;
+							}
 
-						//_changeDir equals how many times we gone thorugh the whole lenth of the arr
-						var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
-						  //steps to take after turning the last time
-						  _stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;						
-						  
-						//if gone though array even numbers of time, starting from left on the last array
-						if((_changeDir) % 2 === 0) return _stepsOnLastTurn;
-						//else start counting from the right
-						else return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
-					}
+							//_changeDir equals how many times we gone thorugh the whole lenth of the arr
+							var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
+								//steps to take after turning the last time
+								_stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;
+
+							//if gone though array even numbers of time, starting from left on the last array
+							if ((_changeDir) % 2 === 0) {
+								return _stepsOnLastTurn;
+							}
+							//else start counting from the right
+							else {
+								return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
+							}
+						};
 
 					var _arrLenght = _board.players[0].finish.length;
 					return [_getOptionOne(_arrLenght, index, diceValue), _getOptionTwo(_arrLenght, index, diceValue)];
 				},
 
-				move: function (tokenId, from, diceValue) {					
+				move: function (tokenId, from, diceValue) {
 					var _playerId = tokenId.slice(0, tokenId.indexOf('-')),
 						_lastTile = _getLastTile(_playerId),
 						_start = from,
 						_to = from + diceValue;
 
 					//if running of the board and is not player 1
-					if(_to > _board.track.length && _playerId !== '0'){
+					if (_to > _board.track.length && _playerId !== '0') {
 						_to = _to - _board.track.length - 1;
 						from = 0;
-					}	
+					}
 
-					//if token completed lap, move to finish 	
-					if(from < _lastTile && _to > _lastTile) {
+					//if token completed lap, move to finish
+					if (from < _lastTile && _to > _lastTile) {
 						_moveToFinish(_playerId, tokenId, _to - _lastTile - 1);
 					}
 
 					//else move along on track
-					else{
-						_move(_playerId, tokenId, _to)
+					else {
+						_move(_playerId, tokenId, _to);
 					}
-					
+
 					_remove(_playerId, tokenId, _start);
 
 				}

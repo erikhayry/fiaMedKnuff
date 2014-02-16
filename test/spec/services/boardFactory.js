@@ -211,8 +211,8 @@ describe('Service: boardFactory', function () {
 
 	});
 
-	describe('getFinishMovesOption()', function(){
-		it('should return options of possibles moves', function(){
+	describe('getFinishMovesOption()', function () {
+		it('should return options of possibles moves', function () {
 			var options1 = boardFactory.getFinishMovesOption(2, 3),
 				options2 = boardFactory.getFinishMovesOption(1, 5);
 
