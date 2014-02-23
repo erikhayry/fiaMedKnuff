@@ -213,14 +213,25 @@ describe('Service: boardFactory', function () {
 
 	describe('getFinishMovesOption()', function () {
 		it('should return options of possibles moves', function () {
+			settings.numberOfTokens = 6;
+			boardFactory.buildBoard(playerFactory.createPlayers(2));
+
 			var options1 = boardFactory.getFinishMovesOption(2, 3),
-				options2 = boardFactory.getFinishMovesOption(1, 5);
+				options2 = boardFactory.getFinishMovesOption(1, 5),
+				options3 = boardFactory.getFinishMovesOption(-1, 2),
+				options4 = boardFactory.getFinishMovesOption(-1, 7);
 
 			expect(options1[0]).toBe(5);
 			expect(options1[1]).toBe(1);
 
 			expect(options2[0]).toBe(4);
 			expect(options2[1]).toBe(4);
+
+			expect(options3[0]).toBe(1);
+			expect(options3[1]).toBe(4);
+
+			expect(options4[0]).toBe(4);
+			expect(options4[1]).toBe(1);
 		});
 	});
 

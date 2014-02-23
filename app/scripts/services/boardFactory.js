@@ -48,6 +48,7 @@ angular.module('fiaMedKnuffApp')
        */
 			var _board = {},
 
+				//get number of total tiles for the board according to game settings
 				_getNumberOfTiles = function (numberOfPlayers) {
 					if (numberOfPlayers < 5) {
 						return 4 * settings.tilesPerPlayer;
@@ -56,6 +57,7 @@ angular.module('fiaMedKnuffApp')
 					return numberOfPlayers * settings.tilesPerPlayer;
 				},
 
+				//build empty board
 				_buildBoard = function (numberOfPlayers) {
 					_board = {
 						'track': new Array(_getNumberOfTiles(numberOfPlayers)),
@@ -67,7 +69,8 @@ angular.module('fiaMedKnuffApp')
 					return (rules.canLeaveNestValues.indexOf(diceValue)) < 0 ? false : true;
 				},
 
-				_getOffset = function (playerId) {
+				//get the start tile of player
+				_getStartTile = function (playerId) {
 					if (_board.players.length === 2) {
 						return playerId * (2 * settings.tilesPerPlayer);
 					} else {
@@ -103,26 +106,32 @@ angular.module('fiaMedKnuffApp')
 						_board.track[to][playerId] = [tokenId];
 					}
 
+					//clean up any of opponents tokens
 					_cleanUpTileofOpponents(playerId, to);
 
 				},
 
+				//remove token from tile
 				_remove = function (playerId, tokenId, from) {
 					var _tile = _board.track[from][playerId];
 					_tile.splice(_tile.indexOf(tokenId), 1);
 				},
 
+				//move token from board to yard
 				_kickBack = function (playerId, tokenId, from) {
 					_board.players[playerId].yard[tokenId.slice(tokenId.indexOf('-') + 1)] = tokenId;
 					_remove(playerId, tokenId, from);
 				},
 
-				_moveToFinish = function (playerId, tokenId, index) {
-					_board.players[playerId].finish[index].push(tokenId);
+				//move token into finish
+				_moveToFinish = function (playerId, tokenId, steps) {
+
+					_board.players[playerId].finish[steps].push(tokenId);
 				},
 
+				//get last tile on board for player
 				_getLastTile = function (playerId) {
-					var _endTile = _getOffset(playerId) - 1;
+					var _endTile = _getStartTile(playerId) - 1;
 					return (_endTile < 0) ? _board.track.length : _endTile;
 				};
 
@@ -144,6 +153,7 @@ angular.module('fiaMedKnuffApp')
 				buildBoard: function (players) {
 					_buildBoard(players.length);
 
+					//add players to board
 					for (var i = 0; i < players.length; i++) {
 						_board.players.push({
 							'yard': [],
@@ -151,7 +161,9 @@ angular.module('fiaMedKnuffApp')
 						});
 
 						for (var j = 0; j < settings.numberOfTokens; j++) {
+							//add to yard
 							_board.players[i].yard.push(i + '-' + j);
+							//build finish	
 							_board.players[i].finish[j] = [];
 						}
 
@@ -161,19 +173,24 @@ angular.module('fiaMedKnuffApp')
 				},
 
 				moveToTrack: function (tokenId, diceValue) {
+					//check if token can leave nest
 					if (!_canLeaveNest(diceValue)) {
 						return false;
 					}
 
 					var _playerId = tokenId.slice(0, tokenId.indexOf('-')),
-						_offset = _getOffset(parseInt(_playerId));
 
+						//get starting tile for player
+						_offset = _getStartTile(parseInt(_playerId));
+
+					//add token to track accodring to rule	
 					if (rules.startAtTileDiceValue) {
 						_move(_playerId, tokenId, _offset + diceValue - 1);
 					} else {
 						_move(_playerId, tokenId, _offset);
 					}
 
+					//clean up yard
 					var _yard = _board.players[parseInt(_playerId)].yard;
 					_yard[_yard.indexOf(tokenId)] = '';
 
@@ -181,7 +198,8 @@ angular.module('fiaMedKnuffApp')
 
 				getFinishMovesOption: function (index, diceValue) {
 
-					var _getOptionOne = function (arrLenght, index, diceVal) {
+					var _getRightMoveOption = function (arrLenght, index, diceVal) {
+
 						//check how many steps to take before switching direction
 						var _stepsOnNextArrs = diceVal - arrLenght + index + 1,
 							_arrLenght = arrLenght - 1;
@@ -205,7 +223,13 @@ angular.module('fiaMedKnuffApp')
 							return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
 						}
 					},
-						_getOptionTwo = function (arrLenght, index, diceVal) {
+						_getLeftMoveOption = function (arrLenght, index, diceVal) {
+
+							//if coming from the outside the finish, start from the other side when moving left
+							if (index < 0) {
+								index = arrLenght + (-1 * index) - 1;
+							}
+
 							//check how many steps to take before switching direction
 							var _stepsOnNextArrs = diceVal - index,
 								_arrLenght = arrLenght - 1;
@@ -226,12 +250,12 @@ angular.module('fiaMedKnuffApp')
 							}
 							//else start counting from the right
 							else {
-								return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
+								return _arrLenght - _stepsOnLastTurn; //-1 to get the index right
 							}
 						};
 
 					var _arrLenght = _board.players[0].finish.length;
-					return [_getOptionOne(_arrLenght, index, diceValue), _getOptionTwo(_arrLenght, index, diceValue)];
+					return [_getRightMoveOption(_arrLenght, index, diceValue), _getLeftMoveOption(_arrLenght, index, diceValue)];
 				},
 
 				move: function (tokenId, from, diceValue) {
@@ -256,6 +280,7 @@ angular.module('fiaMedKnuffApp')
 						_move(_playerId, tokenId, _to);
 					}
 
+					//clean up
 					_remove(_playerId, tokenId, _start);
 
 				}
