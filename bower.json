@@ -17,5 +17,9 @@
     "angular-mocks": "1.2.6",
     "angular-scenario": "1.2.6",
     "angular-translate": "~1.1.1"
+  },
+  "resolutions": {
+    "angular-cookies": "1.2.6",
+    "angular": "1.2.6"
   }
 }

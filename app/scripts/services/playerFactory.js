@@ -24,7 +24,7 @@ angular.module('fiaMedKnuffApp')
 			return {
 				createPlayers: function (numOfPlayers) {
 					_players = [];
-					for (var i = numOfPlayers - 1; i >= 0; i--) {
+					for (var i = 0; i < numOfPlayers; i++) {
 						_createPlayer();
 					}
 					return _players;
