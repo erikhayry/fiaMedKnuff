@@ -4,13 +4,13 @@
  * @ngdoc overview
  * @name index
  * @description
- * NAP Play Admin Tool
- * - github https://github.com/erikportin/napPlayAdmin
+ * Fia med Knuff
+ * - github https://github.com/erikportin/fiaMedKnuff
  */
 
 /**
  * @ngdoc object
- * @name napPlayAdminApp
+ * @name fiaMedKnuffApp
  * @function
  * @requires ngCookies
  * @requires ngRoute
@@ -20,11 +20,32 @@
  */
 
 angular.module('fiaMedKnuffApp', ['ngCookies', 'ngRoute', 'pascalprecht.translate'])
-	.config(function ($routeProvider) {
+	.config(function ($routeProvider, $locationProvider) {
+		$locationProvider.html5Mode(true);
 		$routeProvider
 			.when('/', {
 				templateUrl: 'views/main.html',
-				controller: 'GameCtrl'
+				controller: 'MainCtrl'
+			})
+			.when('/new-game', {
+				templateUrl: 'views/newGame.html',
+				controller: 'NewgameCtrl'
+			})
+			.when('/load-game', {
+				templateUrl: 'views/loadGame.html',
+				controller: 'LoadgameCtrl'
+			})
+			.when('/player', {
+				templateUrl: 'views/player.html',
+				controller: 'PlayerCtrl'
+			})
+			.when('/settings', {
+				templateUrl: 'views/settings.html',
+				controller: 'SettingsCtrl'
+			})
+			.when('/rules', {
+				templateUrl: 'views/rules.html',
+				controller: 'RulesCtrl'
 			})
 			.otherwise({
 				redirectTo: '/'

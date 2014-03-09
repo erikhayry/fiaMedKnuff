@@ -1,3 +1,10 @@
 {
-  "translation": "translation is working"
+  "fiaMedKnuff": "Fia Med Knuff",
+  "startNewGame": "Start New Game",
+  "loadGame": "Load Game",
+  "player": "Player",
+  "settings": "Settings",
+  "rules": "Rules",
+  "tilesPerPlayer": "Tile per player",
+  "numberOfTokens": "Number of Tokens"
 }

@@ -1,0 +1,25 @@
+@import "helpers";
+
+// colours
+$c-1 : #1b1e24;
+$c-2 : #ecf0f1;
+
+$c-error : #E23434;
+$c-warning : yellow;
+
+// chart colours
+//red, blue, yellow, green, turquoise, white, orange, purple, gray
+$ccs : #E23434, #E2DB34, #3495E2, #42E234, #1AE2C2, #FFFFFF, #FAAB36, #BE30C4, #747474;
+
+// global break points
+$bp-s : 580px;
+$bp-m : 980px;
+$bp-l : 1200px;
+
+// font size
+$fs-s : em(12px);
+$fs-m : em(16px);
+$fs-l : em(20px);
+
+// font families
+$ff-1 : "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 

@@ -1,38 +1,42 @@
-/* Space out content a bit */
-body { padding-top: 20px; padding-bottom: 20px; }
+/*
+	Animation helpers and mixins */
+/*
+	mixins */
+/*
+	Animation helpers and mixins */
+/*
+	mixins */
+/*
+	Animation helpers and mixins */
+/*
+	mixins */
+/* http://meyerweb.com/eric/tools/css/reset/  v2.0 | 20110126 License: none (public domain)
+*/
+* { box-sizing: border-box; }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header, .marketing, .footer { padding-left: 15px; padding-right: 15px; }
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; outline: none; }
 
-/* Custom page header */
-.header { border-bottom: 1px solid #e5e5e5; }
+body { line-height: 1.5; padding: 0; color: #ecf0f1; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; background-color: #1b1e24; font-weight: 300; letter-spacing: 2px; }
 
-/* Make the masthead heading the same height as the navigation */
-.header h3 { margin-top: 0; margin-bottom: 0; line-height: 40px; padding-bottom: 19px; }
+a { color: #ecf0f1; }
+a:hover { color: white; }
 
-/* Custom page footer */
-.footer { padding-top: 19px; color: #777; border-top: 1px solid #e5e5e5; }
+ol, ul { list-style: none; }
 
-/* Customize container */
-@media (min-width: 768px) { .container { max-width: 730px; } }
-.container-narrow > hr { margin: 30px 0; }
+blockquote, q { quotes: none; }
 
-/* Main marketing message and sign up button */
-.jumbotron { text-align: center; border-bottom: 1px solid #e5e5e5; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
 
-.jumbotron .btn { font-size: 21px; padding: 14px 24px; }
+table { border-collapse: collapse; border-spacing: 0; }
 
-/* Supporting marketing content */
-.marketing { margin: 40px 0; }
+/*
+	headings
+*/
+h1 { font-size: 1.25em; padding: 10px 0; text-align: center; }
 
-.marketing p + h4 { margin-top: 28px; }
-
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) { /* Remove the padding we set earlier */
-  .header, .marketing, .footer { padding-left: 0; padding-right: 0; }
-  /* Space out the masthead */
-  .header { margin-bottom: 30px; }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron { border-bottom: 0; } }
+/*
+	buttons */
+button { border: none; border-radius: 2px; background-color: #262a33; color: #ecf0f1; padding: 5px 15px; cursor: pointer; outline: none; width: 100%; }
+button[disabled="disabled"] { opacity: 0.2; }
 
 /*# sourceMappingURL=main.css.map */
