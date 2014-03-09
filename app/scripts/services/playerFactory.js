@@ -4,15 +4,6 @@ angular.module('fiaMedKnuffApp')
 	.factory('playerFactory', [
 
 		function () {
-			/*
-        players structure
-        [
-          {
-            'name' : 'Player 1'            
-          }
-        ]
-
-       */
 			var _players = [],
 				_createPlayer = function () {
 					_players.push({
@@ -20,7 +11,6 @@ angular.module('fiaMedKnuffApp')
 					});
 				};
 
-			// Public API here
 			return {
 				createPlayers: function (numOfPlayers) {
 					_players = [];

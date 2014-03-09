@@ -1,21 +1,23 @@
 'use strict';
 
 angular.module('fiaMedKnuffApp')
-	.factory('gameFactory', function (boardFactory) {
-		// Service logic
-		// ...
-
+	.factory('gameFactory', function (boardFactory, rules, settings) {
 		var games = [];
 
-		// Public API here
 		return {
-
-			createGame: function (players, rules, settings) {
-				var game = {};
-				game.id = Date.now();
-				game.rules = rules;
-				game.settings = settings;
-				game.board = boardFactory.buildBoard(players);
+			createGame: function (players) {
+				var game = {
+					id: Date.now(),
+					rules: {
+						'canLeaveNestValues': rules.canLeaveNestValues,
+						'startAtTileDiceValue': rules.startAtTileDiceValue
+					},
+					settings: {
+						'numberOfTokens': settings.numberOfTokens,
+						'tilesPerPlayer': settings.tilesPerPlayer
+					},
+					board: boardFactory.buildBoard(players)
+				};
 
 				games.push(game);
 

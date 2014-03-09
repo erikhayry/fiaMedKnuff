@@ -6,7 +6,7 @@ describe('Service: gameFactory', function () {
 	beforeEach(module('fiaMedKnuffApp'));
 
 	// instantiate service
-	var gameFactory, playerFactory, rules, settings, players, currentRules = {}, currentSettings = {};
+	var gameFactory, playerFactory, players, rules, settings;
 
 	beforeEach(inject(function (_gameFactory_, _playerFactory_, _rules_, _settings_) {
 		gameFactory = _gameFactory_;
@@ -14,43 +14,35 @@ describe('Service: gameFactory', function () {
 		rules = _rules_;
 		settings = _settings_;
 		players = playerFactory.createPlayers(3);
-
-		for (var rule in rules) {
-			currentRules[rule] = rules[rule];
-		}
-
-		for (var setting in settings) {
-			currentSettings[setting] = rules[setting];
-		}
-
 	}));
 
 	describe('createGame()', function () {
 		it('should return a new game', function () {
-			var game = gameFactory.createGame(players, currentRules, currentSettings);
-
-			expect(game.rules.startAtTileDiceValue).toBe(true);
-
-			rules.startAtTileDiceValue = false;
-
-			//for (var rule in rules) {
-			currentRules = Object.create(rules);
-			//}
-
-			var game2 = gameFactory.createGame(players, currentRules, currentSettings);
+			var game = gameFactory.createGame(players);
 
 			expect(game).toBeDefined();
 			expect(game.id).toBeDefined();
 
 			expect(game.rules.startAtTileDiceValue).toBe(true);
+			expect(game.settings.tilesPerPlayer).toBe(14);
+
+			rules.startAtTileDiceValue = false;
+			settings.tilesPerPlayer = 15;
+
+			var game2 = gameFactory.createGame(players);
+
+			expect(game.rules.startAtTileDiceValue).toBe(true);
 			expect(game2.rules.startAtTileDiceValue).toBe(false);
+
+			expect(game.settings.tilesPerPlayer).toBe(14);
+			expect(game2.settings.tilesPerPlayer).toBe(15);
 
 		});
 	});
 
 	describe('getGame()', function () {
 		it('should return a game', function () {
-			var game = gameFactory.createGame(players, currentRules, currentSettings),
+			var game = gameFactory.createGame(players),
 				newGame = gameFactory.getGame(game.id),
 				newGame2 = gameFactory.getGame(1);
 
@@ -62,9 +54,9 @@ describe('Service: gameFactory', function () {
 
 	describe('getGames()', function () {
 		it('should return all games', function () {
-			gameFactory.createGame(players, currentRules, currentSettings);
-			gameFactory.createGame(players, currentRules, currentSettings);
-			gameFactory.createGame(players, currentRules, currentSettings);
+			gameFactory.createGame(players);
+			gameFactory.createGame(players);
+			gameFactory.createGame(players);
 
 			var games = gameFactory.getGames();
 

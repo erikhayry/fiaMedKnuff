@@ -125,7 +125,6 @@ angular.module('fiaMedKnuffApp')
 
 				//move token into finish
 				_moveToFinish = function (playerId, tokenId, steps) {
-
 					_board.players[playerId].finish[steps].push(tokenId);
 				},
 
@@ -133,6 +132,61 @@ angular.module('fiaMedKnuffApp')
 				_getLastTile = function (playerId) {
 					var _endTile = _getStartTile(playerId) - 1;
 					return (_endTile < 0) ? _board.track.length : _endTile;
+				},
+
+				_getFinishRightMoveOption = function (arrLenght, index, diceVal) {
+					//check how many steps to take before switching direction
+					var _stepsOnNextArrs = diceVal - arrLenght + index + 1,
+						_arrLenght = arrLenght - 1;
+
+					//if less than one. direction never changed so return dice value
+					if (_stepsOnNextArrs < 1) {
+						return diceVal + index;
+					}
+
+					//_changeDir equals how many times we gone thorugh the whole lenth of the arr
+					var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
+						//steps to take after turning the last time
+						_stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;
+
+					//if gone though array uneven numbers of time, starting from left on the last array
+					if ((_changeDir) % 2 !== 0) {
+						return _stepsOnLastTurn;
+					}
+					//else start counting from the right
+					else {
+						return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
+					}
+				},
+
+				_getFinishLeftMoveOption = function (arrLenght, index, diceVal) {
+					//if coming from the outside the finish, start from the other side when moving left
+					if (index < 0) {
+						index = arrLenght + (-1 * index) - 1;
+					}
+
+					//check how many steps to take before switching direction
+					var _stepsOnNextArrs = diceVal - index,
+						_arrLenght = arrLenght - 1;
+
+					//if less than one. direction never changed so return dice value
+					if (_stepsOnNextArrs < 1) {
+						return index - diceVal;
+					}
+
+					//_changeDir equals how many times we gone thorugh the whole lenth of the arr
+					var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
+						//steps to take after turning the last time
+						_stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;
+
+					//if gone though array even numbers of time, starting from left on the last array
+					if ((_changeDir) % 2 === 0) {
+						return _stepsOnLastTurn;
+					}
+					//else start counting from the right
+					else {
+						return _arrLenght - _stepsOnLastTurn; //-1 to get the index right
+					}
 				};
 
 			return {
@@ -197,65 +251,11 @@ angular.module('fiaMedKnuffApp')
 				},
 
 				getFinishMovesOption: function (index, diceValue) {
-
-					var _getRightMoveOption = function (arrLenght, index, diceVal) {
-
-						//check how many steps to take before switching direction
-						var _stepsOnNextArrs = diceVal - arrLenght + index + 1,
-							_arrLenght = arrLenght - 1;
-
-						//if less than one. direction never changed so return dice value
-						if (_stepsOnNextArrs < 1) {
-							return diceVal + index;
-						}
-
-						//_changeDir equals how many times we gone thorugh the whole lenth of the arr
-						var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
-							//steps to take after turning the last time
-							_stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;
-
-						//if gone though array uneven numbers of time, starting from left on the last array
-						if ((_changeDir) % 2 !== 0) {
-							return _stepsOnLastTurn;
-						}
-						//else start counting from the right
-						else {
-							return _arrLenght - _stepsOnLastTurn; //-1 to get the idnex right
-						}
-					},
-						_getLeftMoveOption = function (arrLenght, index, diceVal) {
-
-							//if coming from the outside the finish, start from the other side when moving left
-							if (index < 0) {
-								index = arrLenght + (-1 * index) - 1;
-							}
-
-							//check how many steps to take before switching direction
-							var _stepsOnNextArrs = diceVal - index,
-								_arrLenght = arrLenght - 1;
-
-							//if less than one. direction never changed so return dice value
-							if (_stepsOnNextArrs < 1) {
-								return index - diceVal;
-							}
-
-							//_changeDir equals how many times we gone thorugh the whole lenth of the arr
-							var _changeDir = Math.floor(_stepsOnNextArrs / _arrLenght),
-								//steps to take after turning the last time
-								_stepsOnLastTurn = _stepsOnNextArrs % _arrLenght;
-
-							//if gone though array even numbers of time, starting from left on the last array
-							if ((_changeDir) % 2 === 0) {
-								return _stepsOnLastTurn;
-							}
-							//else start counting from the right
-							else {
-								return _arrLenght - _stepsOnLastTurn; //-1 to get the index right
-							}
-						};
-
 					var _arrLenght = _board.players[0].finish.length;
-					return [_getRightMoveOption(_arrLenght, index, diceValue), _getLeftMoveOption(_arrLenght, index, diceValue)];
+					return [
+						_getFinishRightMoveOption(_arrLenght, index, diceValue),
+						_getFinishLeftMoveOption(_arrLenght, index, diceValue)
+					];
 				},
 
 				move: function (tokenId, from, diceValue) {
