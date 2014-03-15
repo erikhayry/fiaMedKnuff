@@ -6,5 +6,8 @@
   "settings": "Settings",
   "rules": "Rules",
   "tilesPerPlayer": "Tile per player",
-  "numberOfTokens": "Number of Tokens"
+  "numberOfTokens": "Number of Tokens",
+  "canLeaveNestValues": "Enter Token to Play values",
+  "startAtTileDiceValue": "Start on tile of dice value"
+
 }

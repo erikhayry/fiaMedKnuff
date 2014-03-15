@@ -66,7 +66,7 @@ angular.module('fiaMedKnuffApp')
 				},
 
 				_canLeaveNest = function (diceValue) {
-					return (rules.canLeaveNestValues.indexOf(diceValue)) < 0 ? false : true;
+					return rules.canLeaveNestValues[diceValue];
 				},
 
 				//get the start tile of player

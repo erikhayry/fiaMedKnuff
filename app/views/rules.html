@@ -1,2 +1,15 @@
 <h1>{{'rules' | translate}}</h1>
+<ul>
+	<li>
+		{{'canLeaveNestValues' | translate}} 
+		<fieldset ng-repeat="(key,val) in rules.canLeaveNestValues">
+			<label for="leave-nest-{{key}}">{{key}}</label>	 
+			<input id="leave-nest-{{key}}" type="checkbox" ng-checked="rules.canLeaveNestValues[key]" ng-model="rules.canLeaveNestValues[key]">
+		</fieldset>  
+	</li>
+	<li>
+		{{'startAtTileDiceValue' | translate}} 
+		<input type="checkbox" ng-model="rules.startAtTileDiceValue"></input>
+	</li>
+</ul>
 <a href="/">Back</a>

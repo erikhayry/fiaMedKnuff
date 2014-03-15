@@ -48,7 +48,7 @@ angular.module('fiaMedKnuffApp', ['ngCookies', 'ngRoute', 'pascalprecht.translat
 				controller: 'RulesCtrl'
 			})
 			.otherwise({
-				redirectTo: '/'
+				redirectTo: '/rules'
 			});
 	})
 
