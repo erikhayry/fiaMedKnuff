@@ -1,12 +1,8 @@
 'use strict';
 
 angular.module('fiaMedKnuffApp')
-	.controller('GameCtrl', ['$scope',
-		function ($scope) {
-			$scope.awesomeThings = [
-				'HTML5 Boilerplate',
-				'AngularJS',
-				'Karma'
-			];
-		}
-	]);
+	.controller('GameCtrl', function ($scope, $routeParams, gameFactory) {
+		$scope.id = $routeParams.id;
+		$scope.board = gameFactory.getGame($routeParams.id);
+		console.log($scope.board);
+	});

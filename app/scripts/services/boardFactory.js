@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('fiaMedKnuffApp')
-	.factory('boardFactory', ['settings', 'rules',
-		function (settings, rules) {
+	.factory('boardFactory', [
+
+		function () {
 			/*
         board structure
         {
@@ -51,30 +52,33 @@ angular.module('fiaMedKnuffApp')
 				//get number of total tiles for the board according to game settings
 				_getNumberOfTiles = function (numberOfPlayers) {
 					if (numberOfPlayers < 5) {
-						return 4 * settings.tilesPerPlayer;
+						return 4 * _board.settings.tilesPerPlayer;
 					}
 
-					return numberOfPlayers * settings.tilesPerPlayer;
+					return numberOfPlayers * _board.settings.tilesPerPlayer;
 				},
 
 				//build empty board
-				_buildBoard = function (numberOfPlayers) {
+				_buildBoard = function (numberOfPlayers, rules, settings) {
 					_board = {
-						'track': new Array(_getNumberOfTiles(numberOfPlayers)),
+						'rules': rules,
+						'settings': settings,
 						'players': []
 					};
+
+					_board.track = new Array(_getNumberOfTiles(numberOfPlayers));
 				},
 
 				_canLeaveNest = function (diceValue) {
-					return rules.canLeaveNestValues[diceValue];
+					return _board.rules.canLeaveNestValues[diceValue];
 				},
 
 				//get the start tile of player
 				_getStartTile = function (playerId) {
 					if (_board.players.length === 2) {
-						return playerId * (2 * settings.tilesPerPlayer);
+						return playerId * (2 * _board.settings.tilesPerPlayer);
 					} else {
-						return playerId * settings.tilesPerPlayer;
+						return playerId * _board.settings.tilesPerPlayer;
 					}
 				},
 
@@ -204,8 +208,8 @@ angular.module('fiaMedKnuffApp')
 				 * @param  {[type]} players [description]
 				 * @return {[type]}         [description]
 				 */
-				buildBoard: function (players) {
-					_buildBoard(players.length);
+				buildBoard: function (players, rules, settings) {
+					_buildBoard(players.length, rules, settings);
 
 					//add players to board
 					for (var i = 0; i < players.length; i++) {
@@ -238,7 +242,7 @@ angular.module('fiaMedKnuffApp')
 						_offset = _getStartTile(parseInt(_playerId));
 
 					//add token to track accodring to rule	
-					if (rules.startAtTileDiceValue) {
+					if (_board.rules.startAtTileDiceValue) {
 						_move(_playerId, tokenId, _offset + diceValue - 1);
 					} else {
 						_move(_playerId, tokenId, _offset);

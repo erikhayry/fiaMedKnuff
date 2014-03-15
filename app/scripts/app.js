@@ -47,8 +47,12 @@ angular.module('fiaMedKnuffApp', ['ngCookies', 'ngRoute', 'pascalprecht.translat
 				templateUrl: 'views/rules.html',
 				controller: 'RulesCtrl'
 			})
+			.when('/game/:id', {
+				templateUrl: 'views/game.html',
+				controller: 'GameCtrl'
+			})
 			.otherwise({
-				redirectTo: '/rules'
+				redirectTo: '/'
 			});
 	})
 

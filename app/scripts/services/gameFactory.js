@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('fiaMedKnuffApp')
-	.factory('gameFactory', function (boardFactory, rules, settings) {
+	.factory('gameFactory', function (boardFactory) {
 		var games = [];
 
 		return {
-			createGame: function (players) {
+			createGame: function (players, rules, settings) {
 				var game = {
 					id: Date.now(),
 					rules: {
@@ -16,7 +16,7 @@ angular.module('fiaMedKnuffApp')
 						'numberOfTokens': settings.numberOfTokens,
 						'tilesPerPlayer': settings.tilesPerPlayer
 					},
-					board: boardFactory.buildBoard(players)
+					board: boardFactory.buildBoard(players, rules, settings)
 				};
 
 				games.push(game);
@@ -26,7 +26,7 @@ angular.module('fiaMedKnuffApp')
 
 			getGame: function (id) {
 				for (var i = 0; i < games.length; i++) {
-					if (games[i].id === id) {
+					if (games[i].id === parseInt(id)) {
 						return games[i];
 					}
 				}
