@@ -19,7 +19,7 @@ describe('Service: boardFactory', function () {
 	}));
 
 	beforeEach(function () {
-		board = boardFactory.buildBoard(playerFactory.createPlayers(5));
+		board = boardFactory.buildBoard(playerFactory.createPlayers(5), rules, settings);
 	});
 
 	describe('rollDice()', function () {
@@ -56,7 +56,7 @@ describe('Service: boardFactory', function () {
 
 		it('should build the nest and the finish according to the amount of tokens', function () {
 			settings.numberOfTokens = 6;
-			var sixTokenBoard = boardFactory.buildBoard(playerFactory.createPlayers(2));
+			var sixTokenBoard = boardFactory.buildBoard(playerFactory.createPlayers(2), rules, settings);
 
 			expect(sixTokenBoard.players[0].yard.length).toBe(6);
 			expect(sixTokenBoard.players[1].yard.length).toBe(6);
@@ -86,7 +86,7 @@ describe('Service: boardFactory', function () {
 			expect(board.players[1].yard[1]).toBe('');
 			expect(board.track[14][1][0]).toBe('1-1');
 
-			var twoPlayerBoard = boardFactory.buildBoard(playerFactory.createPlayers(2));
+			var twoPlayerBoard = boardFactory.buildBoard(playerFactory.createPlayers(2), rules, settings);
 
 			boardFactory.moveToTrack('0-0', 6);
 			expect(twoPlayerBoard.players[0].yard[0]).toBe('');
@@ -214,7 +214,7 @@ describe('Service: boardFactory', function () {
 	describe('getFinishMovesOption()', function () {
 		it('should return options of possibles moves', function () {
 			settings.numberOfTokens = 6;
-			boardFactory.buildBoard(playerFactory.createPlayers(2));
+			boardFactory.buildBoard(playerFactory.createPlayers(2), rules, settings);
 
 			var options1 = boardFactory.getFinishMovesOption(2, 3),
 				options2 = boardFactory.getFinishMovesOption(1, 5),

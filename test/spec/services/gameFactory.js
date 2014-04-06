@@ -18,7 +18,7 @@ describe('Service: gameFactory', function () {
 
 	describe('createGame()', function () {
 		it('should return a new game', function () {
-			var game = gameFactory.createGame(players);
+			var game = gameFactory.createGame(players, rules, settings);
 
 			expect(game).toBeDefined();
 			expect(game.id).toBeDefined();
@@ -29,7 +29,7 @@ describe('Service: gameFactory', function () {
 			rules.startAtTileDiceValue = false;
 			settings.tilesPerPlayer = 15;
 
-			var game2 = gameFactory.createGame(players);
+			var game2 = gameFactory.createGame(players, rules, settings);
 
 			expect(game.rules.startAtTileDiceValue).toBe(true);
 			expect(game2.rules.startAtTileDiceValue).toBe(false);
@@ -42,7 +42,7 @@ describe('Service: gameFactory', function () {
 
 	describe('getGame()', function () {
 		it('should return a game', function () {
-			var game = gameFactory.createGame(players),
+			var game = gameFactory.createGame(players, rules, settings),
 				newGame = gameFactory.getGame(game.id),
 				newGame2 = gameFactory.getGame(1);
 
@@ -54,9 +54,9 @@ describe('Service: gameFactory', function () {
 
 	describe('getGames()', function () {
 		it('should return all games', function () {
-			gameFactory.createGame(players);
-			gameFactory.createGame(players);
-			gameFactory.createGame(players);
+			gameFactory.createGame(players, rules, settings);
+			gameFactory.createGame(players, rules, settings);
+			gameFactory.createGame(players, rules, settings);
 
 			var games = gameFactory.getGames();
 
