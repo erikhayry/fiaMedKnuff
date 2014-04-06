@@ -31,17 +31,12 @@ describe('Service: boardFactory', function () {
 	});
 
 	describe('buildBoard()', function () {
-		it('should build a board with players', function () {
+		it('should build a board with players yard', function () {
 			expect(board.players.length).toBe(5);
 			expect(board.track.length).toBe(70);
 
 			expect(board.players[0].yard.length).toBe(4);
 			expect(board.players[1].yard.length).toBe(4);
-
-			expect(board.players[0].finish.length).toBe(4);
-			expect(board.players[1].finish.length).toBe(4);
-
-			expect(board.players[0].finish[0].length).toBe(0);
 
 			expect(board.players[0].yard[0]).toBe('0-0');
 			expect(board.players[0].yard[1]).toBe('0-1');
@@ -52,6 +47,17 @@ describe('Service: boardFactory', function () {
 			expect(board.players[1].yard[1]).toBe('1-1');
 			expect(board.players[1].yard[2]).toBe('1-2');
 			expect(board.players[1].yard[3]).toBe('1-3');
+		});
+
+		it('should build a board with players finish', function(){
+			expect(board.players[0].finish.length).toBe(4);
+			expect(board.players[1].finish.length).toBe(4);
+			expect(board.players[0].finish[0].length).toBe(0);
+		});
+
+		it('should build a board with players name', function(){
+			expect(board.players[0].name).toBe('Player 1');
+			expect(board.players[1].name).toBe('Player 2');
 		});
 
 		it('should build the nest and the finish according to the amount of tokens', function () {

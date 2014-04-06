@@ -25,6 +25,6 @@ angular.module('fiaMedKnuffApp')
 
 		$scope.startNewGame = function (players, rules, settings) {
 			var _game = gameFactory.createGame(players, rules, settings);
-			$window.location.href = '/game/' + _game.id;
+			$window.location.href = '#/game/' + _game.id;
 		};
 	});

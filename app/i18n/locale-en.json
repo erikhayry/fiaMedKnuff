@@ -8,6 +8,6 @@
   "tilesPerPlayer": "Tile per player",
   "numberOfTokens": "Number of Tokens",
   "canLeaveNestValues": "Enter Token to Play values",
-  "startAtTileDiceValue": "Start on tile of dice value"
-
+  "startAtTileDiceValue": "Start on tile of dice value",
+  "possessive": "'s"
 }

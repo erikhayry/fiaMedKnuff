@@ -21,7 +21,7 @@
 
 angular.module('fiaMedKnuffApp', ['ngCookies', 'ngRoute', 'pascalprecht.translate'])
 	.config(function ($routeProvider, $locationProvider) {
-		$locationProvider.html5Mode(true);
+		//$locationProvider.html5Mode(true);
 		$routeProvider
 			.when('/', {
 				templateUrl: 'views/main.html',
