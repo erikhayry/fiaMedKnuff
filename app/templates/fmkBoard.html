@@ -1,0 +1,20 @@
+<div class="m-board">
+	<h2>{{currentPlayer.name}}{{'possessive' | translate}} {{'turn' | translate}}</h2> 
+	<button class="m-dice" ng-click="rollDice()" ng-disabled="roundState !== 'roll'">{{diceVal}}</button>
+	<ul>
+		<li ng-repeat="player in players">
+			{{player.name}}
+			<h2>Yard</h2>
+			<ul>
+				<li ng-repeat="tile in player.yard track by $index">{{$index}} = {{tile}}</li>
+			</ul>
+			<h2>Finish</h2>
+			<ul>
+				<li ng-repeat="tile in player.finish track by $index">{{$index}} = {{tile}}</li>
+			</ul>		
+		</li>
+	</ul>
+	<ul>
+		<li ng-repeat="tile in track track by $index">{{$index}} = {{tile}}</li>
+	</ul>	
+</div>

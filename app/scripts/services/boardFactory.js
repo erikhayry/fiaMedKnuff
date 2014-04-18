@@ -216,7 +216,8 @@ angular.module('fiaMedKnuffApp')
 						_board.players.push({
 							'yard': [],
 							'finish': new Array(settings.numberOfTokens),
-							'name' : players[i].name
+							'name': players[i].name,
+							'id': players[i].id
 						});
 
 						for (var j = 0; j < settings.numberOfTokens; j++) {

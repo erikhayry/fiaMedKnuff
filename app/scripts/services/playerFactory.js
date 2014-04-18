@@ -5,9 +5,10 @@ angular.module('fiaMedKnuffApp')
 
 		function () {
 			var _players = [],
-				_createPlayer = function () {
+				_createPlayer = function (index) {
 					_players.push({
-						'name': 'Player ' + (_players.length + 1)
+						'name': 'Player ' + (_players.length + 1),
+						'id': index
 					});
 				};
 
@@ -15,7 +16,7 @@ angular.module('fiaMedKnuffApp')
 				createPlayers: function (numOfPlayers) {
 					_players = [];
 					for (var i = 0; i < numOfPlayers; i++) {
-						_createPlayer();
+						_createPlayer(i);
 					}
 					return _players;
 				}

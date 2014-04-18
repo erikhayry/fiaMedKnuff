@@ -20,6 +20,9 @@ describe('Service: playerFactory', function () {
 
 			expect(players[0].name).toBe('Player 1');
 			expect(players[1].name).toBe('Player 2');
+
+			expect(players[0].id).toBe(0);
+			expect(players[1].id).toBe(1);
 		});
 	});
 });
