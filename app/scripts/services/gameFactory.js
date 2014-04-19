@@ -52,24 +52,16 @@ angular.module('fiaMedKnuffApp')
 			},
 
 			startRound: function (game, currentPlayerId, diceVal) {
-				console.log('Current: ' + currentPlayerId);
-				console.log('Players: ' + game.startingRound.players);
-				console.log('Winner: ' + game.startingRound.winner);
-
 				//check dice val and take action
 				if (diceVal > game.startingRound.diceVal) {
-					console.log('- new high dice value ' + diceVal);
 					game.startingRound.diceVal = diceVal;
 					game.startingRound.winner = [currentPlayerId];
 				} else if (diceVal === game.startingRound.diceVal) {
-					console.log('- new player to winner arr ' + currentPlayerId);
-					console.log(game.startingRound.winner);
 					game.startingRound.winner.push(currentPlayerId);
 				}
 
 				//check if done, if start a new round or get next player
 				if (game.startingRound.winner.length === 1 && game.startingRound.players.length === 1) {
-					console.log('- we got a winner');
 					//we are done > start game
 					game.startingRound.players = [];
 					game.gameState = 'game';
@@ -78,7 +70,6 @@ angular.module('fiaMedKnuffApp')
 
 				//still got players
 				else if (game.startingRound.players.length > 1) {
-					console.log('- still got player to roll');
 					//remove player from player arr
 					game.startingRound.players.splice(game.startingRound.players.indexOf(currentPlayerId), 1);
 
@@ -88,11 +79,11 @@ angular.module('fiaMedKnuffApp')
 
 				//round is done but we still don't have winner
 				else {
-					console.log('- no more players to roll but no winner');
 					//start new round
 					game.startingRound.players = game.startingRound.winner;
 					game.startingRound.winner = [];
 					game.startingRound.diceVal = 0;
+					currentPlayerId = game.startingRound.players[0];
 				}
 
 				return {
